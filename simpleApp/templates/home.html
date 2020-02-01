@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+{% block content%}
+{% for delivery in delivery_list %}
+<article class="media content-section">
+    <div class="media-body">
+        <div class="article-metadata">
+            <a class="article-item mr-2" href="#">{{ delivery.product_id }}</a>
+            <small class="text-muted">{{ delivery.status }}</small>
+        </div>
+        <h2><a class="article-title" href="#">{{ delivery.product_name }}</a></h2>
+        <p class="article-content">Parcel Weight: {{ delivery.parcel_weight }}</p>
+        <p class="article-content">Sent From: {{ delivery.sent_from }}</p>
+        <p class="article-content">Sent To: {{ delivery.sent_to }}</p>
+    </div>
+</article>
+{% endfor %}
+{% endblock content%}

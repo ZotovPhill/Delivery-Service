@@ -1,0 +1,122 @@
+body {
+    background: #fafafa;
+    color: #333333;
+    margin-top: 5rem;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: #444444;
+  }
+  
+  .bg-nav-color {
+    background-color: #2f1a7ee1;
+  }
+  
+  .site-header .navbar-nav .nav-link {
+    color: #cbd5db;
+  }
+  
+  .site-header .navbar-nav .nav-link:hover {
+    color: #ffffff;
+  }
+  
+  .site-header .navbar-nav .nav-link.active {
+    font-weight: 500;
+  }
+  
+  .content-section {
+    background: #ffffff;
+    padding: 10px 20px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+  
+  .article-title {
+    color: #444444;
+  }
+  
+  a.article-title:hover {
+    color: #428bca;
+    text-decoration: none;
+  }
+  
+  .article-content {
+    white-space: pre-line;
+    margin: 5px;
+  }
+  
+  .article-img {
+    height: 65px;
+    width: 65px;
+    margin-right: 16px;
+  }
+  
+  .article-metadata {
+    padding-bottom: 1px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid #e3e3e3
+  }
+  
+  .article-metadata a:hover {
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .article-svg {
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+  }
+  
+  .account-img {
+    height: 125px;
+    width: 125px;
+    margin-right: 20px;
+    margin-bottom: 16px;
+  }
+  
+  .account-heading {
+    font-size: 2.5rem;
+  }
+
+  .navbar-toggler {
+    padding: .25rem .75rem;
+    font-size: 1.25rem;
+    line-height: 1;
+    background-color: transparent;
+    border: 1px solid wheat;
+    border-radius: .25rem;
+  }
+  a {
+    color: #333333;
+    text-decoration: none;
+    background-color: transparent;
+  }
+  a.nav-link:hover {
+    color: rgb(197, 152, 67);
+    text-decoration: none;
+    background-color: transparent;
+  }
+  a.article-item.mr-2 {
+    color: rgb(35, 1, 187);
+}
+
+a.nav-link{
+    color: rgb(243, 198, 114);
+}
+
+a.navbar-brand{
+    color:rgb(243, 198, 114);
+}
+button.btn.btn-outline-secondary:hover {
+    background-color: #343a40;
+}
+
+label.name-label{
+  color:rgb(243, 198, 114);
+  text-align: center;
+  margin-bottom: 4px;
+  padding-right: 16px;
+}

@@ -1,0 +1,126 @@
+{% extends 'layout.html' %}
+{% block content%}
+<div class='content-section'>
+    <form method="POST" action="">
+        {{registration_form.hidden_tag()}}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Create your Delivery Service Account</legend>
+
+            <div class="form-group">
+                {{ registration_form.first_name.label(class='form-control-label') }}
+
+                {% if registration_form.first_name.errors %}
+                {{ registration_form.first_name(class='form-control form-control-lg is-invalid')}}
+                <div class="invalid-feedback">
+                    {% for error in registration_form.first_name.errors%}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ registration_form.first_name(class='form-control form-control-lg') }}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ registration_form.last_name.label(class='form-control-label') }}
+
+                {% if registration_form.last_name.errors %}
+                {{ registration_form.last_name(class='form-control form-control-lg is-invalid') }}
+                <div class="invalid-feedback">
+                    {% for error in registration_form.last_name.errors%}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ registration_form.last_name(class='form-control form-control-lg') }}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ registration_form.personal_id.label(class='form-control-label') }}
+
+                {% if registration_form.personal_id.errors %}
+                {{ registration_form.personal_id(value = personal_id, class='form-control form-control-lg is-invalid') }}
+                <div class="invalid-feedback">
+                    {% for error in registration_form.personal_id.errors%}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ registration_form.personal_id(value = personal_id, class='form-control form-control-lg') }}
+                {% endif %}
+
+                {{'Remember this number. It use for your login account authorization'}}
+            </div>
+
+            <div class="form-group">
+                {{ registration_form.email.label(class='form-control-label') }}
+
+                {% if registration_form.email.errors %}
+                {{ registration_form.email(class='form-control form-control-lg is-invalid') }}
+                <div class="invalid-feedback">
+                    {% for error in registration_form.email.errors%}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ registration_form.email(class='form-control form-control-lg') }}
+                {% endif %}
+
+                {{'You can use letters, numbers & periods'}}
+            </div>
+
+            <div class="form-group">
+                {{ registration_form.country.label(class='form-control-label') }}
+
+                {% if registration_form.country.errors %}
+                {{ registration_form.country(class='form-control form-control-lg is-invalid') }}
+                <div class="invalid-feedback">
+                    {% for error in registration_form.country.errors%}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ registration_form.country(class='form-control form-control-lg') }}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ registration_form.password.label(class='form-control-label') }}
+
+                {% if registration_form.password.errors %}
+                {{ registration_form.password(class='form-control form-control-lg is-invalid') }}
+                <div class="invalid-feedback">
+                    {% for error in registration_form.password.errors%}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ registration_form.password(class='form-control form-control-lg') }}
+                {% endif %}
+
+                {{'Use 8 or more characters with a mix of letters, numbers & symbols'}}
+            </div>
+
+            <div class="form-group">
+                {{ registration_form.confirm_password.label(class='form-control-label') }}
+
+                {% if registration_form.confirm_password.errors %}
+                {{ registration_form.confirm_password(class='form-control form-control-lg is-invalid') }}
+                <div class="invalid-feedback">
+                    {% for error in registration_form.confirm_password.errors%}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ registration_form.confirm_password(class='form-control form-control-lg') }}
+                {% endif %}
+
+            </div>
+        </fieldset>
+        <div class="form-group">
+            {{ registration_form.submit(class="btn btn-outline-info") }}
+        </div>
+    </form>
+</div>
+{% endblock content%}
