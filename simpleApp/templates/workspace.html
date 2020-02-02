@@ -89,4 +89,21 @@
         </div>
     </form>
 </div>
+{% for package in packages %}
+<article class="media content-section">
+    <div class="media-body">
+        <div class="article-metadata">
+            <a class="article-item mr-2" href="#">{{ package.product_id }}</a>
+            <small class="text-muted">{{ package.creating_date }}</small>
+        </div>
+        <h2><a class="article-title" href="#">{{ package.product_name }}</a></h2>
+        <p class="article-content">Parcel Weight: {{ package.parcel_weight }}</p>
+        <p class="article-content">Sent From: {{ package.sent_from.city }}, {{ package.sent_from.country }}</p>
+        <p class="article-content">Sent To: {{ package.sent_to.city}}, {{ package.sent_to.country }}</p>
+        <p class="article-content">Customer: {{ package.owner.first_name }} {{ package.owner.last_name }}</p>
+        <p class="article-content">Descripton: {{package.description}}</p>
+    </div>
+</article>
+{% endfor %}
+
 {% endblock content%}

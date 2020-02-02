@@ -27,8 +27,8 @@ class Employee(db.Model, UserMixin):
     __tablename__ = "employee"
 
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(20), nullable=False)
-    last_name = db.Column(db.String(20), nullable=False)
+    first_name = db.Column(db.String(60), nullable=False)
+    last_name = db.Column(db.String(60), nullable=False)
     personal_id = db.Column(db.String(20), unique=True, nullable=False)
     working_place = db.Column(db.Integer, db.ForeignKey("location.id"), nullable=False)
     password = db.Column(db.String(60), nullable=False)
@@ -45,12 +45,18 @@ class Package(db.Model):
     __tablename__ = "package"
 
     id = db.Column(db.Integer, primary_key=True)
-    product_id = db.Column(db.String(40), nullable=False)
+    product_id = db.Column(db.String(60), nullable=False)
     product_name = db.Column(db.String(100), nullable=False)
-    parcel_weight = db.Column(db.Integer, nullable=False)
+    parcel_weight = db.Column(db.Float, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    sent_from = db.Column(db.String(20), nullable=False)
-    sent_to = db.Column(db.String(20), nullable=False)
+    sent_from_id = db.Column(db.Integer, db.ForeignKey("location.id"))
+    sent_to_id = db.Column(db.Integer, db.ForeignKey("location.id"))
+
+    sent_from = db.relationship(
+        "Location", backref="from_place", foreign_keys=[sent_from_id]
+    )
+    sent_to = db.relationship("Location", backref="to_place", foreign_keys=[sent_to_id])
+    description = db.Column(db.String(1000), nullable=False)
     creating_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     orders = db.relationship("Delivery", backref="parcel", lazy=True)
 

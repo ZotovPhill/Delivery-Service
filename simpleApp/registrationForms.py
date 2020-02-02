@@ -1,6 +1,14 @@
 from flask_wtf import FlaskForm
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, SelectField, BooleanField
+from wtforms import (
+    StringField,
+    PasswordField,
+    SubmitField,
+    SelectField,
+    BooleanField,
+    FloatField,
+    TextAreaField,
+)
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from simpleApp.models import User, Employee
 
@@ -94,8 +102,8 @@ class UpdateForms(FlaskForm):
     country = SelectField(
         "Country:",
         choices=[
-            ("1", "Belarus"),
-            ("2", "Western Russia"),
+            ("1", "Western Russia"),
+            ("2", "Belarus"),
             ("3", "Ukrain"),
             ("4", "Poland"),
         ],
@@ -114,3 +122,33 @@ class UpdateForms(FlaskForm):
                     E-mail data!
                     """
                 )
+
+
+class NewPackageForm(FlaskForm):
+    product_id = StringField(
+        "Product ID:", validators=[DataRequired(), Length(min=36, max=36)]
+    )
+    product_name = StringField(
+        "Product Name:", validators=[DataRequired(), Length(min=2, max=60)]
+    )
+    parcel_weight = FloatField("Parcel weight (kg.):", validators=[DataRequired()])
+    sent_from = SelectField(
+        "Sent from:",
+        choices=[
+            ("Mos", "Moskow"),
+            ("Min", "Minsk"),
+            ("Kie", "Kiev"),
+            ("Warsh", "Warshaw"),
+        ],
+    )
+    sent_to = SelectField(
+        "Sent to:",
+        choices=[
+            ("Mos", "Moskow"),
+            ("Min", "Minsk"),
+            ("Kie", "Kiev"),
+            ("Warsh", "Warshaw"),
+        ],
+    )
+    description = TextAreaField("Description:", validators=[DataRequired()])
+    submit = SubmitField("Save")

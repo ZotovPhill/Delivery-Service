@@ -1,8 +1,14 @@
 from flask import render_template, url_for, flash, redirect, request
 from simpleApp.models import User, Employee, Package, Delivery, Location
-from simpleApp.registrationForms import RegistrationForms, LoginForms, UpdateForms
+from simpleApp.registrationForms import (
+    RegistrationForms,
+    LoginForms,
+    UpdateForms,
+    NewPackageForm,
+)
 from simpleApp import app, db, bcrypt, login_manager
-from flask_login import login_user, current_user, logout_user
+from flask_login import login_user, current_user, logout_user, login_required
+import uuid
 
 import secrets
 
@@ -119,9 +125,13 @@ def workspace():
         update_form.last_name.data = current_user.last_name
         update_form.email.data = current_user.email
         update_form.country.data = current_user.live_place
+
+    packages = Package.query.filter_by(user_id=current_user.id).all()
+
     return render_template(
         "workspace.html",
         title="Workspace",
+        packages=packages,
         login_form=login_form,
         username=current_user,
         location=f"{user_location.country}, {user_location.city}",
@@ -144,6 +154,55 @@ def about():
 def logout():
     logout_user()
     return redirect(url_for("home"))
+
+
+@app.route("/workspace/package", methods=["GET", "POST"])
+@login_required
+def new_package():
+    login_form = LoginForms()
+    new_package_form = NewPackageForm()
+    product_id = str(uuid.uuid4())
+    if new_package_form.validate_on_submit():
+        from_city_on_form = new_package_form.sent_from.data
+        to_city_on_form = new_package_form.sent_to.data
+        location_from = (
+            db.session.query(Location)
+            .filter(Location.city.like(f"%{from_city_on_form}%"))
+            .first()
+        )
+        location_to = (
+            db.session.query(Location)
+            .filter(Location.city.like(f"%{to_city_on_form}%"))
+            .first()
+        )
+
+        package = Package(
+            product_id=product_id,
+            product_name=new_package_form.product_name.data,
+            parcel_weight=new_package_form.parcel_weight.data,
+            user_id=current_user.id,
+            sent_from=location_from,
+            sent_to=location_to,
+            description=new_package_form.description.data,
+        )
+        db.session.add(package)
+        db.session.commit()
+        flash("New Package has been created!", "success")
+        return redirect(url_for("workspace"))
+
+    return render_template(
+        "new_package.html",
+        title="New Package",
+        login_form=login_form,
+        new_package_form=new_package_form,
+        product_id=product_id,
+    )
+
+
+@app.route("/workspace/package/<int:package_id>")
+def updata_package(package_id):
+    package = Package.query.get_or_404(package_id)
+    return render_template("update_package.html", title=package.id, package=package)
 
 
 @login_manager.user_loader
