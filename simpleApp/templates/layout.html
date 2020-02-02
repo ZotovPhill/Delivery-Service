@@ -139,33 +139,7 @@
 
     </nav>
 
-    <div class="row">
-        <div class="caption text-center text-justify col-2 col-md-2"></div>
-        <div class="caption text-center text-justify col-8 col-md-8">
-            <h1>
-                Courier service providers usually have a very large network across countries.
-            </h1>
-            <h3>On logging, the person needs to make an entry of a package number that should be reaching to him/her.
-                This data is directly uploaded to the main system that now keeps track of latest location and
-                status
-                of the package through an active internet connection. The data stored on server can now be used for
-                live package status tracking by customers.
-            </h3>
-        </div>
-        <div class="caption text-center text-justify col-2 col-md-2"></div>
-    </div>
-
-    <div class="container text-center ml-lg-8">
-        <div class="input-group mt-5 mb-3">
-            <input type="text" class="form-control" placeholder="Package ID" aria-label="Package ID"
-                aria-describedby="basic-addon2">
-            <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button">Submit</button>
-            </div>
-        </div>
-        <!-- <a class="btn btn-main btn-outline-dark btn-lg" href="#goods">Давайте начнем :)</a> -->
-    </div>
-
+    {% block searchbar %}{% endblock searchbar %}
     <main role="main" class="container">
         <div class="row">
             <div class="col-md-8">
@@ -178,7 +152,7 @@
                 {% endfor %}
                 {% endif %}
                 {% endwith %}
-                {% block content %}{% endblock %}
+                {% block content %}{% endblock content %}
             </div>
             <div class="col-md-4">
                 <div class="content-section">
@@ -250,7 +224,7 @@
                         </p>
                     </div>
                     <div class="col-md-12 align-center info">
-                        <p>Copyright, 2020—2023 PyWaves.by</p>
+                        <p>Copyright, 2020—2023 PyPath.py</p>
                     </div>
                 </div>
             </div>

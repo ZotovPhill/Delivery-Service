@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField, SelectField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from simpleApp.models import User, Employee
@@ -19,8 +20,8 @@ class RegistrationForms(FlaskForm):
     country = SelectField(
         "Country:",
         choices=[
-            ("Bel", "Belarus"),
             ("Wes", "Western Russia"),
+            ("Bel", "Belarus"),
             ("Ukr", "Ukrain"),
             ("Pol", "Poland"),
         ],
@@ -71,12 +72,45 @@ class LoginForms(FlaskForm):
 
     def validate_personal_id(self, personal_id):
         user_personal_id = User.query.filter_by(personal_id=personal_id.data).first()
-        employee_personal_id = Employee.query.filter_by(
-            personal_id=personal_id.data
-        ).first()
-
-        if not user_personal_id and not employee_personal_id:
+        if not user_personal_id:
             raise ValidationError(
                 """This user does not exist! Check correctness of your data.
                 """
             )
+
+        # employee_personal_id = Employee.query.filter_by(
+        #     personal_id=personal_id.data
+        # ).first()
+
+
+class UpdateForms(FlaskForm):
+    first_name = StringField(
+        "First Name:", validators=[DataRequired(), Length(min=2, max=20)]
+    )
+    last_name = StringField(
+        "Last Name:", validators=[DataRequired(), Length(min=2, max=20)]
+    )
+    email = StringField("E-mail:", validators=[DataRequired(), Email()])
+    country = SelectField(
+        "Country:",
+        choices=[
+            ("1", "Belarus"),
+            ("2", "Western Russia"),
+            ("3", "Ukrain"),
+            ("4", "Poland"),
+        ],
+    )
+
+    submit = SubmitField("Update profile")
+
+    def validate_email(self, email):
+        if email.data != current_user.email:
+            email = User.query.filter_by(email=email.data).first()
+            if email:
+                raise ValidationError(
+                    """This E-mail is been used! For you security protection
+                    purpose we strongly recommend to use only one E-mail
+                    per account. Make sure to typed correctly or choose another
+                    E-mail data!
+                    """
+                )

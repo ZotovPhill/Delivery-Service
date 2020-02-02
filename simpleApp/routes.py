@@ -1,6 +1,6 @@
-from flask import render_template, url_for, flash, redirect
+from flask import render_template, url_for, flash, redirect, request
 from simpleApp.models import User, Employee, Package, Delivery, Location
-from simpleApp.registrationForms import RegistrationForms, LoginForms
+from simpleApp.registrationForms import RegistrationForms, LoginForms, UpdateForms
 from simpleApp import app, db, bcrypt, login_manager
 from flask_login import login_user, current_user, logout_user
 
@@ -34,16 +34,7 @@ def home():
 
     if login_form.validate_on_submit():
         user = User.query.filter_by(personal_id=login_form.personal_id.data).first()
-        employee = Employee.query.filter_by(
-            personal_id=login_form.personal_id.data
-        ).first()
-        if user:
-            user_location = Location.query.filter_by(id=user.live_place).first()
-        else:
-            employee_location = Location.query.filter_by(
-                id=employee.working_place
-            ).first()
-
+        user_location = Location.query.filter_by(id=user.live_place).first()
         if (
             user
             and bcrypt.check_password_hash(user.password, login_form.password.data)
@@ -57,13 +48,6 @@ def home():
                 "success",
             )
             return redirect(url_for("home"))
-        elif (
-            employee
-            and bcrypt.check_password_hash(employee.password, login_form.password.data)
-            and employee_location.country[:3] == login_form.country.data
-        ):
-            login_user(employee)
-            return redirect(url_for("workspace"))
         else:
             flash("Authorization failled. Try another ID or Password", "danger")
     return render_template(
@@ -117,14 +101,31 @@ def registration():
     )
 
 
-@app.route("/workspace")
+@app.route("/workspace", methods=["GET", "POST"])
 def workspace():
     login_form = LoginForms()
+    update_form = UpdateForms()
+    user_location = Location.query.filter_by(id=current_user.live_place).first()
+    if update_form.validate_on_submit():
+        current_user.first_name = update_form.first_name.data
+        current_user.last_name = update_form.last_name.data
+        current_user.email = update_form.email.data
+        current_user.live_place = update_form.country.data
+        db.session.commit()
+        flash("Your account has been updated", "success")
+        return redirect(url_for("workspace"))
+    elif request.method == "GET":
+        update_form.first_name.data = current_user.first_name
+        update_form.last_name.data = current_user.last_name
+        update_form.email.data = current_user.email
+        update_form.country.data = current_user.live_place
     return render_template(
         "workspace.html",
         title="Workspace",
         login_form=login_form,
         username=current_user,
+        location=f"{user_location.country}, {user_location.city}",
+        update_form=update_form,
     )
 
 
@@ -153,3 +154,22 @@ def load_user(user_id):
 # @login_manager.user_loader
 # def load_employee(employee_id):
 #     return Employee.query.get(int(employee_id))
+
+# employee = Employee.query.filter_by(
+#     personal_id=login_form.personal_id.data
+# ).first()
+# if user:
+
+# else:
+# employee_location = Location.query.filter_by(
+#     id=employee.working_place
+# ).first()
+
+
+# elif (
+#     employee
+#     and bcrypt.check_password_hash(employee.password, login_form.password.data)
+#     and employee_location.country[:3] == login_form.country.data
+# ):
+#     login_user(employee)
+#     return redirect(url_for("workspace"))
